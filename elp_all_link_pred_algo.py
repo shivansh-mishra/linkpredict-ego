@@ -451,8 +451,7 @@ def elp (adj) :
         neighbors = G.neighbors(node)
         #first level for direct neighoburs, increase ego strength by 3
         for single in neighbors :
-            ego_str[node][single] += 5
-            #ego_str[single][node] += 3
+            ego_str[node][single] += 32
         #2nd level where edges between neighbours of node considered
         #print("triangles for node "+str(node)+" is = "+str(triangles[node]))
         neighbors1 = G.neighbors(node)
@@ -461,8 +460,7 @@ def elp (adj) :
             for neighbor2 in neighbors2 :
                 if G.has_edge(neighbor1,neighbor2)  :
                     #print("change 2nd level")
-                    ego_str[neighbor1][neighbor2] += 4
-                    #ego_str[neighbor2][neighbor1] += 2
+                    ego_str[neighbor1][neighbor2] += 16
         #3rd level where 2 hop edges wrt node are considered
         neighbors = G.neighbors(node)
         set_2hop = set()
@@ -472,16 +470,15 @@ def elp (adj) :
                 if neighbor_2hop != node and not G.has_edge(neighbor_2hop,node):
                     set_2hop.add(neighbor_2hop)
                     #print("change 3rd level")
-                    ego_str[single][neighbor_2hop] += 3
+                    ego_str[single][neighbor_2hop] += 8
                     neighbors_3hop = G.neighbors(neighbor_2hop)
                     for far_single in neighbors_3hop :
                         if far_single != single and not G.has_edge(far_single,single):
-                            ego_str[neighbor_2hop][far_single] += 1
-                    #ego_str[neighbor_2hop][single] += 1
+                            ego_str[neighbor_2hop][far_single] += 2
         for node1 in set_2hop :
             for node2 in set_2hop :
                 if node1 != node2 and G.has_edge(node1,node2):
-                    ego_str[node1][node2] += 2
+                    ego_str[node1][node2] += 4
 
     #print("ego strength after counting")
     '''for node1 in G:
